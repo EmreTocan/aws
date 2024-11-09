@@ -14,6 +14,19 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     - name: Checkout Code
       uses: actions/checkout@v2
 
+    #- name: Set up Python
+    #  uses: actions/setup-python@v2
+
+    - name: Install Dependencies
+      run: sudo apt-get install -y unzip
+
+    - name: tests
+      run: |
+        pytest --maxfail=1 --disable-warnings -q
+      # maxfail hata olursa daha fazla test çalıştırılmayack
+      #  disable : test sırsında oluşan hatalar engellenir - test sonucu gösterir
+      #  çıktı daha anlaşabilir özet olur.
+
     # eğer sistemde sonarlint yok ise yüklenmesini sağlıyoruz birden fazla işlem oldupu için pipe kullanıyoruz indirip, açıp istediğimiz yere çıkartıyoruz.
    # - name: Install Sonar Scanner
     #  run: |
@@ -22,8 +35,6 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     #    sudo mv sonar-scanner-4.8.0.2856-linux /opt/sonar-scanner
     #    echo "export PATH=\$PATH:/opt/sonar-scanner/bin" >> $GITHUB_ENV
 
-    - name: Install Dependencies
-      run: sudo apt-get install -y unzip
 
     # sonarlint kalite, düzen ve güvenlik taraması yapmak için adımımıza ekliyoruz 
     # sonar-scanner: bu komutla kodun analiz edilmesi için parametreler alır 
@@ -32,14 +43,15 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     # 35: sonar sunucunun adresi belirtir 
     # 36: doğrulama için tokendir 
     
-    - name: Run SonarLint 
-      run: | 
-        echo "SonarLint taraması gerçekleştiriliyor..."  
-        sonar-scanner -Dsonar.projectKey=my_project_key \
-                       -Dsonar.sources=. \
-                       -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-                       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-      continue-on-error: true
+    #- name: Run SonarLint 
+    #  run: | 
+    #    echo "SonarLint taraması gerçekleştiriliyor..."  
+    #    sonar-scanner -Dsonar.projectKey=my_project_key \
+    #                   -Dsonar.sources=. \
+    #                   -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+    #-Dsonar.login=${{ secrets.SONAR_TOKEN }}
+    # continue-on-error: true
+    
     # burada hataya rağmen devam etmesi içi || true veya continue-on-error: true kullandım ikiside işe yaradı . 
     # spesifik bir bölgedeyse hata //NOSONAR yazılacak 
     # Docker için login
