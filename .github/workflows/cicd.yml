@@ -28,7 +28,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
   
     - name: tests
       run: |
-        pytest --maxfail=1 --disable-warnings -q
+        pytest -v --maxfail=1 --disable-warnings -q
       # maxfail hata olursa daha fazla test çalıştırılmayack
       #  disable : test sırsında oluşan hatalar engellenir - test sonucu gösterir
       #  çıktı daha anlaşabilir özet olur.
