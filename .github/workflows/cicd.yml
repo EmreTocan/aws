@@ -1,10 +1,54 @@
-name: CI/CD Workflow
+name: CI/CD Pipeline  
 
-on:
-  push:
-    branches:
-      - main  
-jobs:
-    build:
-        runs-on: ubuntu-latest
-        
+on: # hangi olaylarla tetikleneceğini sıralamak için 
+  push: # değişiklik yapıldığında bir yerden diğer yere aktarıldığında tetiklenir
+    branches: # yukarıdaki push gerçekleştiğinde hangi dalın etkileneceği seçilir. 
+      - main # yukarıdaki push gerçekleştiğinde main tetiklenir ve iş akışı tetiklenir
+
+jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız 
+  build: 
+    runs-on: ubuntu-latest # hangi iişletim sisteminde çalışacağımızı seçiyoruz 
+
+    steps: # işlemlerimize başlarken her bir adımı buranın altında yapacağız
+    # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    # eğer sistemde sonarlint yok ise yüklenmesini sağlıyoruz birden fazla işlem oldupu için pipe kullanıyoruz indirip, açıp istediğimiz yere çıkartıyoruz.
+   # - name: Install Sonar Scanner
+    #  run: |
+    #    wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
+    #    unzip sonar-scanner-cli-4.8.0.2856-linux.zip
+    #    sudo mv sonar-scanner-4.8.0.2856-linux /opt/sonar-scanner
+    #    echo "export PATH=\$PATH:/opt/sonar-scanner/bin" >> $GITHUB_ENV
+
+    - name: Install Dependencies
+      run: sudo apt-get install -y unzip
+
+    # sonarlint kalite, düzen ve güvenlik taraması yapmak için adımımıza ekliyoruz 
+    # sonar-scanner: bu komutla kodun analiz edilmesi için parametreler alır 
+    # -Dsonar.projectKey=my_project_key: analiz edilen prohenin anahtarıdır (burada bir soru işaretim var araştırdım bulamadım)
+    # -Dsonar.sources=. \ analiz edilecek kodun yeriini belirtir 
+    # 35: sonar sunucunun adresi belirtir 
+    # 36: doğrulama için tokendir 
+    
+    - name: Run SonarLint 
+      run: | 
+        echo "SonarLint taraması gerçekleştiriliyor..."  
+        sonar-scanner -Dsonar.projectKey=my_project_key \
+                       -Dsonar.sources=. \
+                       -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+                       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      continue-on-error: true
+    # burada hataya rağmen devam etmesi içi || true veya continue-on-error: true kullandım ikiside işe yaradı . 
+    # spesifik bir bölgedeyse hata //NOSONAR yazılacak 
+    # Docker için login
+    - name: Docker Login
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    # Docker build ve push işlemi
+    - name: Build and Push Docker Image
+      run: |
+        IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/flask-api:${{ github.sha }}"
+        docker build -t $IMAGE_TAG .
+        docker push $IMAGE_TAG
