@@ -21,10 +21,10 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
         sudo apt-get install -y unzip
         pip install -r requirements.txt
-        
+
     - name: tests
       run: |
-        pytest --maxfail=1 --disable-warnings -q
+        pytest /task --maxfail=1 --disable-warnings -q
       # maxfail hata olursa daha fazla test çalıştırılmayack
       #  disable : test sırsında oluşan hatalar engellenir - test sonucu gösterir
       #  çıktı daha anlaşabilir özet olur.
