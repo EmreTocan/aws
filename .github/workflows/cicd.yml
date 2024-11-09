@@ -25,6 +25,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     - name: Install Trivy
       run: |
           sudo apt update
+          sudo apt install snapd
           sudo apt install trivy
 
     - name: Run Trivy Scan
