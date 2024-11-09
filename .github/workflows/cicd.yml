@@ -32,9 +32,11 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     - name: Run Trivy Scan
       run: |
         trivy image --severity HIGH,CRITICAL node:14 
-      # maxfail hata olursa daha fazla test çalıştırılmayack
-      #  disable : test sırsında oluşan hatalar engellenir - test sonucu gösterir
-      #  çıktı daha anlaşabilir özet olur.
+        
+    # docker imagleri kontrol eder- güvenlik açıklarını kontrol eder
+    # severetiy hangi kritik aşamada raporlamasını istiyoruz 
+    
+     
 
     # eğer sistemde sonarlint yok ise yüklenmesini sağlıyoruz birden fazla işlem oldupu için pipe kullanıyoruz indirip, açıp istediğimiz yere çıkartıyoruz.
    # - name: Install Sonar Scanner
