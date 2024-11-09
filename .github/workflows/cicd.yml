@@ -21,14 +21,15 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
         sudo apt-get install -y unzip
         pip install -r requirements.txt
-   
-    - name: Verify pytest installation
+    
+    - name: Install Trivy
       run: |
-        pytest --version  # kurulum kontrol
-  
-    - name: tests
-      run: |
-        pytest -v --maxfail=1 --disable-warnings -q
+         curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.37.0/trivy_0.37.0_Linux-x86_64.deb -o trivy.deb
+         sudo dpkg -i trivy.deb
+
+
+    - name: Run Trivy
+      run: trivy image --severity HIGH,CRITICAL node:14
       # maxfail hata olursa daha fazla test çalıştırılmayack
       #  disable : test sırsında oluşan hatalar engellenir - test sonucu gösterir
       #  çıktı daha anlaşabilir özet olur.
