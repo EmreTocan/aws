@@ -46,7 +46,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     - name: Docker Login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    # Docker build ve push iş
+    # Docker build ve push işi
     - name: Build and Push Docker Image
       run: |
         IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/flask-api:${{ github.sha }}"
