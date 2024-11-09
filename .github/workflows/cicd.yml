@@ -45,8 +45,8 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     # Docker için login
     - name: Docker Login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-    # Docker build ve push işi
+    
+      # Docker build ve push işlemi
     - name: Build and Push Docker Image
       run: |
         IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}"
