@@ -24,9 +24,10 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     
     - name: Install Trivy
       run: |
-          sudo apt update
-          sudo apt install -y snapd
-          sudo apt install trivy
+          sudo apt-get update
+          sudo apt-get install -y snapd
+          sudo systemctl enable --now snapd.socket
+          sudo snap install trivy
 
     - name: Run Trivy Scan
       run: |
