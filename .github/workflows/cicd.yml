@@ -24,7 +24,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     
     - name: Install Trivy
       run: |
-          sudo apt-get install -f
+          sudo apt-get install -f -y
           curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.37.0/trivy_0.37.0_Linux-x86_64.deb -o trivy.deb
           sudo dpkg -i trivy.deb    # Trivy'yi sisteminize kurun
           trivy --version
