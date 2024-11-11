@@ -31,11 +31,16 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
 
     - name: Run Trivy Scan
       run: |
-        trivy image --severity HIGH,CRITICAL node:14 
-        
+        trivy image --severity HIGH,CRITICAL emretocan/myimage:lates
+    # allow_failure: true /hata olursa devam et
     # docker imagleri kontrol eder- güvenlik açıklarını kontrol eder
     # severetiy hangi kritik aşamada raporlamasını istiyoruz 
-    
+# docker kontrol için   
+
+#    name: Run Trivy security scan
+#    run: |
+#      docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy yourusername/yourappname:latest
+
      
 
     # eğer sistemde sonarlint yok ise yüklenmesini sağlıyoruz birden fazla işlem oldupu için pipe kullanıyoruz indirip, açıp istediğimiz yere çıkartıyoruz.
