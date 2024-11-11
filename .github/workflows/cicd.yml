@@ -29,7 +29,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
 
-    - name: Run Trivy Scan
+    - name: Run Trivy Scan 
       run: |
         trivy image --severity HIGH,CRITICAL emretocan/myimage
     # allow_failure: true /hata olursa devam et
