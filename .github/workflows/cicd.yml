@@ -31,7 +31,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
 
     - name: Run Trivy Scan
       run: |
-        trivy image --severity HIGH,CRITICAL --skip-update ${{ secrets.DOCKER_USERNAME }}/myimage
+        trivy image --severity HIGH,CRITICAL emretocan/myimage
     # allow_failure: true /hata olursa devam et
     # docker imagleri kontrol eder- güvenlik açıklarını kontrol eder
     # severetiy hangi kritik aşamada raporlamasını istiyoruz 
