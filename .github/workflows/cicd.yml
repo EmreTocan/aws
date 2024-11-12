@@ -64,8 +64,8 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     #    echo "SonarLint taraması gerçekleştiriliyor..."  
     #    sonar-scanner -Dsonar.projectKey=my_project_key \
     #                   -Dsonar.sources=. \
-    #                   -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-    #-Dsonar.login=${{ secrets.SONAR_TOKEN }}
+    #                   -Dsonar.host.url={{ secrets.SONAR_HOST_URL }} \  $
+    #-Dsonar.login={{ secrets.SONAR_TOKEN }}  $
     # continue-on-error: true
     
     # burada hataya rağmen devam etmesi içi || true veya continue-on-error: true kullandım ikiside işe yaradı . 
@@ -80,3 +80,19 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}"
         docker build -t $IMAGE_TAG . 
         docker push $IMAGE_TAG
+    
+    - name: AWS connect etme
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > emresilinecek.pem 
+        chmod 400 emresilinecek.pem
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@your-ec2-public-ip 
+        docker stop -f $(docker ps -aq) || true
+        docker rm -f $(docker ps -aq) || true
+        docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
+        docker run -d --name my-image-container -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
+        
+
+        rm emresilinecek.pem
+        
+
+
