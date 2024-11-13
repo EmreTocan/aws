@@ -29,6 +29,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           sudo apt-get install -y snapd
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
+          trivy image --download-db-only
           sudo apt-get update
     
     - name: Run Trivy Scan 
