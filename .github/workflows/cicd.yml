@@ -29,11 +29,8 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           sudo apt-get install -y snapd
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
-    - name: Update Trivy DB
-      run: |
-          trivy update
+          sudo apt-get update
     
-
     - name: Run Trivy Scan 
       run: |
         trivy image --severity HIGH,CRITICAL emretocan/myimage
