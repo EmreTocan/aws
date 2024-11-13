@@ -29,7 +29,10 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           sudo apt-get install -y snapd
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
-    
+    - name: Pull Trivy DB image manually
+      run: |
+          docker pull ghcr.io/aquasecurity/trivy-db:2
+
     - name: Run Trivy Scan 
       run: |
         trivy image --severity HIGH,CRITICAL emretocan/myimage
