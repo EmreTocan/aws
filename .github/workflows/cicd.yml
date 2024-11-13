@@ -24,10 +24,12 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     
     - name: Install Trivy
       run: |
+          set -e
           sudo apt-get update
           sudo apt-get install -y snapd
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
+          trivy --download-db-only
     
     - name: asiri istek trivy
       run: trivy --refresh
