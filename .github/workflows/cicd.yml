@@ -83,6 +83,10 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}"
         docker build -t $IMAGE_TAG . 
         docker push $IMAGE_TAG
+
+    - name: Host Key'i Doğrulama İçin Ekle
+      run: |
+        ssh-keyscan -H 3.90.2.191 >> ~/.ssh/known_hosts
     
     - name: AWS connect etme
       run: |
