@@ -83,16 +83,12 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}"
         docker build -t $IMAGE_TAG . 
         docker push $IMAGE_TAG
-
-    - name: Host Key'i Doğrulama İçin Ekle
-      run: |
-        ssh-keyscan -H 3.90.2.191 >> ~/.ssh/known_hosts
     
     - name: AWS connect etme
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > emresilinecek.pem 
         chmod 400 emresilinecek.pem
-        ssh -o ConnectTimeout=30 -i emresilinecek.pem ubuntu@3.90.2.191
+        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emresilinecek.pem ubuntu@3.90.2.191 << EOF
         docker stop -f $(docker ps -aq) || true
         docker rm -f $(docker ps -aq) || true
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
