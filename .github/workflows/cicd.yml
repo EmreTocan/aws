@@ -95,4 +95,3 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         docker run -d --name my-image-container -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
 
         rm emre1.pem
-    
