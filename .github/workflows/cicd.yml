@@ -86,7 +86,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     
     - name: AWS connect etme
       run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > emre1.pem 
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" >> emre1.pem 
         chmod 400 emre1.pem
         ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre1.pem ubuntu@3.90.2.191
         docker stop -f $(docker ps -aq) || true
