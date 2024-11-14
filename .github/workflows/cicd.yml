@@ -88,13 +88,11 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > emresilinecek.pem 
         chmod 400 emresilinecek.pem
-        ssh -o ConnectTimeout=30 -i emresilinecek.pem ubuntu@172.31.38.44
+        ssh -o ConnectTimeout=30 -i emresilinecek.pem ubuntu@3.90.2.191
         docker stop -f $(docker ps -aq) || true
         docker rm -f $(docker ps -aq) || true
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
         docker run -d --name my-image-container -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
         
         rm emresilinecek.pem
-        
-
-
+    
