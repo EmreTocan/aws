@@ -88,7 +88,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > emre1.pem
         chmod 400 emre1.pm
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i /Downloads/emre1.pem ubuntu@3.90.2.191 << 'EOF'
+        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre1.pem ubuntu@3.90.2.191 << 'EOF'
           docker stop -f $(docker ps -aq) || true
           docker rm -f $(docker ps -aq) || true
           docker pull ***/myimage:f32d2fa83bf2a12318ba1be2d6353ab6be58c80f
