@@ -92,6 +92,5 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           docker pull ***/myimage:f32d2fa83bf2a12318ba1be2d6353ab6be58c80f
           docker run -d --name my-image-container -p 5000:5000 ***/myimage:f32d2fa83bf2a12318ba1be2d6353ab6be58c80f
         EOF
-                
         rm emre1.pem
     
