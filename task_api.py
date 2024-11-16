@@ -71,6 +71,6 @@ def delete_task(task_id):
     
     return jsonify({'message': 'Görev başarıyla silindi'}), 200
 
-# Uygulama çalıştırma
+# Uygulama çalıştııırma
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
