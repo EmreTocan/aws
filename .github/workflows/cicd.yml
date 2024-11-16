@@ -93,5 +93,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         docker stop -f $(docker ps -aq) || true
         docker rm -f $(docker ps -aq) || true
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
-        docker run -d --name my-image-container -p 0.0.0.0:5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
+        docker run -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
+
+       
         rm emre.pem
