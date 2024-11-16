@@ -73,4 +73,4 @@ def delete_task(task_id):
 
 # Uygulama çalıştırma
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="3.90.2.191", port=5000)
