@@ -88,7 +88,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" >> emre1.pem 
         chmod 400 emre1.pem
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre1.pem ubuntu@3.90.2.191
+        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre1.pem ubuntu@3.80.21.119
         docker stop -f $(docker ps -aq) || true
         docker rm -f $(docker ps -aq) || true
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
