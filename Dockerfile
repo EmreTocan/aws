@@ -1,8 +1,8 @@
 FROM python:3.9-slim
 
-RUN mkdir /app
+RUN mkdir /home/ubuntu/app
 
-WORKDIR /app
+WORKDIR /home/ubuntu/app
 
 COPY requirements.txt .
 
