@@ -20,6 +20,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     - name: Install Dependencies
       run: |
         sudo apt-get install -y unzip
+        sudo apt install python3-pip -y
         pip install -r requirements.txt
     
     - name: Install Trivy
@@ -86,12 +87,12 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     
     - name: AWS connect etme
       run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" >> emre1.pem 
-        chmod 400 emre1.pem
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre1.pem ubuntu@3.80.21.119
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" >> emre.pem 
+        chmod 400 emre.pem
+        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre.pem ubuntu@3.80.21.119
         docker stop -f $(docker ps -aq) || true
         docker rm -f $(docker ps -aq) || true
         docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
         docker run -d --name my-image-container -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
 
-        rm emre1.pem
+        rm emre.pem
