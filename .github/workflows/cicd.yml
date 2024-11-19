@@ -36,6 +36,21 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
        
         trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
+    
+    - name: Docker kurulum
+      run: |
+        - apt update && apt install -y apt-transport-https ca-certificates curl software-properties-common
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+        - apt update && apt install -y docker-ce docker-ce-cli containerd.io
+        - docker --version
+        - systemctl start docker
+        - systemctl status docker || echo "Docker servisi çalismiyor, kontrol edin."
+        - systemctl enable docker 
+
+
+
+        
     # allow_failure: true /hata olursa devam et
     # docker imagleri kontrol eder- güvenlik açıklarını kontrol eder
     # severetiy hangi kritik aşamada raporlamasını istiyoruz 
@@ -91,7 +106,6 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         chmod 400 emre.pem
         ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre.pem ubuntu@3.80.21.119
         hostname && ip r 
-        docker pull ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
         docker stop  ${{ github.sha }} || true
         docker rm  ${{ github.sha }} || true
         docker run -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
