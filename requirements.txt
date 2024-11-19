@@ -1,2 +1,2 @@
 flask
-trivy
+Trivy
