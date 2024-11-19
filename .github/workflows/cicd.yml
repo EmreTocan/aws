@@ -38,7 +38,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
 
 
-    - name: Docker kurulum
+    - name: Docker kurulumm
       run: |
         sudo apt update
         sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
