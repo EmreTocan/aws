@@ -27,14 +27,14 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     
     - name: Install Trivy
       run: |
-          et -e
-          # Diğer apt-get süreçlerinin kilidi tutup tutmadığını kontrol et
+          set -e
+          # Diğer apt-get süreçlerinin kilidi tutup tutmadiğini kontrol et
           while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do 
-            echo "Başka bir apt-get süreci kilidi serbest bırakana kadar bekliyorum..."
+            echo "Başka bir apt-get süreci kilidi serbest birakana kadar bekliyorum..."
             sleep 5
           done
           
-          # Eğer kilit dosyası hala varsa temizleyin
+          # Eğer kilit dosyasi hala varsa temizleyin
           sudo rm -f /var/lib/dpkg/lock-frontend
           sudo rm -f /var/cache/apt/archives/lock
           sudo rm -f /var/lib/dpkg/lock
@@ -45,6 +45,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
           sudo snap refresh trivy
+
     - name: Run Trivy Scan 
       run: |
        
