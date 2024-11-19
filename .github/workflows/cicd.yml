@@ -7,7 +7,8 @@ on: # hangi olaylarla tetikleneceğini sıralamak için
 
 jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız 
   build: 
-      runs-on: self-hosted # hangi iişletim sisteminde çalışacağımızı seçiyoruz 
+    runs-on:
+      group: ubuntu-runners
 
     steps: # işlemlerimize başlarken her bir adımı buranın altında yapacağız
     # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak
@@ -37,13 +38,6 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
        
         trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
     
-    - name: Github runners kurulum
-      run: |
-        mkdir actions-runner && cd actions-runner
-        curl -o actions-runner-linux-x64-2.320.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.320.0/actions-runner-linux-x64-2.320.0.tar.gz
-        tar xzf ./actions-runner-linux-x64-2.320.0.tar.gz
-        ./config.sh --url https://github.com/EmreTocan/aws --token BIS2RAQATAHPHXQWAMVA6I3HHTU2O
-        ./run.sh
 
     
     - name: Docker kurulum
