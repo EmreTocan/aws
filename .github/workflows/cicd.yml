@@ -54,7 +54,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         fi
 
 
-    - name: Docker kurulum
+    - name: Docker kurulumm
       run: |
         sudo apt update
         sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
