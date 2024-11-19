@@ -8,7 +8,7 @@ on: # hangi olaylarla tetikleneceğini sıralamak için
 jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız 
   build: 
     runs-on:
-      group: ubuntu-runners
+      group: ubuntu:latest
 
     steps: # işlemlerimize başlarken her bir adımı buranın altında yapacağız
     # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak
