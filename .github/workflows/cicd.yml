@@ -63,6 +63,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         sudo docker --version
         sudo systemctl start docker
         sudo systemctl enable docker
+        sudo usermod -aG docker $USER
       shell: bash
 
 
