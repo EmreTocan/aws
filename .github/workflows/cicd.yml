@@ -36,9 +36,22 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
       run: |
        
         trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
-    
 
-    
+        
+    - name: Github runners kurulum
+      run: |
+        if [ ! -d "/home/ubuntu/actions-runner" ]; then
+          echo "GitHub runner is not installed, installing now..."
+          mkdir actions-runner && cd actions-runner
+          curl -o actions-runner-linux-x64-2.320.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.320.0/actions-runner-linux-x64-2.320.0.tar.gz
+          tar xzf ./actions-runner-linux-x64-2.320.0.tar.gz
+          ./config.sh --url https://github.com/EmreTocan/aws --token BIS2RAVNPT6IM4GSHH4VRXDHHT2BO
+          ./run.sh
+        else
+          echo "GitHub runner is already installed, skipping installation."
+        fi
+
+
     - name: Docker kurulum
       run: |
         sudo apt update
