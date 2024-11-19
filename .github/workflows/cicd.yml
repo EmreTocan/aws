@@ -38,7 +38,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
 
         
-    - name: Github runners kurulum
+    - name: Github runners kurulumm
       run: |
         if [ ! -d "/home/ubuntu/actions-runner" ]; then
           echo "GitHub runner is not installed, installing now..."
