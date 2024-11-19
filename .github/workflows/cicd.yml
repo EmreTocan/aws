@@ -47,6 +47,8 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           tar xzf ./actions-runner-linux-x64-2.320.0.tar.gz
           ./config.sh --url https://github.com/EmreTocan/aws --token BIS2RAVNPT6IM4GSHH4VRXDHHT2BO
           ./run.sh
+          sudo ./svc.sh install
+          sudo ./svc.sh start
         else
           echo "GitHub runner is already installed, skipping installation."
         fi
