@@ -10,7 +10,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     runs-on: self-hosted
 
     steps: # işlemlerimize başlarken her bir adımı buranın altında yapacağız
-    # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak
+    # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak2
     - name: Checkout Code
       uses: actions/checkout@v2
 
