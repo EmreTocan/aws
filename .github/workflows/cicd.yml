@@ -44,11 +44,11 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           echo "GitHub runner is not installed, installing now..."
           mkdir actions-runner && cd actions-runner
           curl -o actions-runner-linux-x64-2.320.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.320.0/actions-runner-linux-x64-2.320.0.tar.gz
-          tar xzf ./actions-runner-linux-x64-2.320.0.tar.gz
+          tar xzf ./actions-runner-linux-x64-2.320.0.tar.gz -y
           ./config.sh --url https://github.com/EmreTocan/aws --token BIS2RASOWYBYETLFEE5XGX3HHT5C4
           ./run.sh
-          sudo ./svc.sh install
-          sudo ./svc.sh start
+          sudo ./svc.sh install -y
+          sudo ./svc.sh start -y
         else
           echo "GitHub runner is already installed, skipping installation."
         fi
