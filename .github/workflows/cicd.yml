@@ -20,6 +20,8 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     - name: Install Dependencies
       run: |
           sudo apt-get update -y
+          python3 -m venv venv
+          source venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
     
