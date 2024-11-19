@@ -7,7 +7,7 @@ on: # hangi olaylarla tetikleneceğini sıralamak için
 
 jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız 
   build: 
-    runs-on: ubuntu:latest
+    runs-on: self-hosted
 
     steps: # işlemlerimize başlarken her bir adımı buranın altında yapacağız
     # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak
@@ -45,7 +45,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           mkdir actions-runner && cd actions-runner
           curl -o actions-runner-linux-x64-2.320.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.320.0/actions-runner-linux-x64-2.320.0.tar.gz
           tar xzf ./actions-runner-linux-x64-2.320.0.tar.gz 
-          ./config.sh --url https://github.com/EmreTocan/aws --token BIS2RASOWYBYETLFEE5XGX3HHT5C4 --unattended --replace
+          ./config.sh --url https://github.com/EmreTocan/aws --token BIS2RAUJMY74PK2QZ4UVEVTHHUDEM --unattended --replace
           ./run.sh
           sudo ./svc.sh install -y
           sudo ./svc.sh start -y
