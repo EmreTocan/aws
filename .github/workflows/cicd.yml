@@ -127,8 +127,8 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         chmod 400 emre.pem
         ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre.pem ubuntu@3.80.21.119
         hostname && ip r 
-        docker stop  ${{ github.sha }} || true
-        docker rm  ${{ github.sha }} || true
+        docker stop $(docker ps -q)
+        docker rm $(docker ps -a -q)
         docker run -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
 
        
