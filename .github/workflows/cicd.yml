@@ -64,6 +64,9 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         sudo systemctl start docker
         sudo systemctl enable docker
         sudo usermod -aG docker $USER
+        newgrp docker
+        sudo chmod 666 /var/run/docker.sock
+
       shell: bash
 
 
