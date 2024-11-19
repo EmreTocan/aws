@@ -102,7 +102,7 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         docker build -t $IMAGE_TAG . 
         docker push $IMAGE_TAG
     
-    - name: AWS connect etme
+    - name: AWS connect etmee
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" >> emre.pem 
         chmod 400 emre.pem
