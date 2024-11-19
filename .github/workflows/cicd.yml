@@ -51,25 +51,6 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
        
         trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
 
-
-    - name: Docker kurulumm
-      run: |
-        sudo apt update
-        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-        yes | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        sudo apt update
-        sudo apt install -y docker-ce docker-ce-cli containerd.io
-        sudo docker --version
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        sudo usermod -aG docker $USER
-        newgrp docker
-        sudo chmod 666 /var/run/docker.sock
-
-      shell: bash
-
-
         
     # allow_failure: true /hata olursa devam et
     # docker imagleri kontrol eder- güvenlik açıklarını kontrol eder
@@ -110,6 +91,26 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
     # burada hataya rağmen devam etmesi içi || true veya continue-on-error: true kullandım ikiside işe yaradı . 
     # spesifik bir bölgedeyse hata //NOSONAR yazılacak 
     # Docker için login
+    - name: Docker kurulumm
+      run: |
+        sudo apt update
+        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+        sudo rm -f /usr/share/keyrings/docker-archive-keyring.gpg
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt update
+        sudo apt install -y docker-ce docker-ce-cli containerd.io
+        sudo docker --version
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        sudo usermod -aG docker $USER
+        newgrp docker
+        sudo chmod 666 /var/run/docker.sock
+
+      shell: bash
+      
+      
     - name: Docker Login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
     
