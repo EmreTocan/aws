@@ -16,14 +16,6 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
 
     #- name: Set up Python
     #  uses: actions/setup-python@v2
-
-    - name: Install Dependencies
-      run: |
-          sudo apt-get update -y
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
     
     - name: Install Trivy
       run: |
@@ -45,71 +37,6 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
           sudo systemctl enable --now snapd.socket
           sudo snap install trivy
           sudo snap refresh trivy
-
-    - name: Run Trivy Scan 
-      run: |
-       
-        trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 emretocan/myimage
-
-        
-    # allow_failure: true /hata olursa devam et
-    # docker imagleri kontrol eder- güvenlik açıklarını kontrol eder
-    # severetiy hangi kritik aşamada raporlamasını istiyoruz 
-# docker kontrol için   
-
-#    name: Run Trivy security scan
-#    run: |
-#      docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy yourusername/yourappname:latest
-
-     
-
-    # eğer sistemde sonarlint yok ise yüklenmesini sağlıyoruz birden fazla işlem oldupu için pipe kullanıyoruz indirip, açıp istediğimiz yere çıkartıyoruz.
-   # - name: Install Sonar Scanner
-    #  run: |
-    #    wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-    #    unzip sonar-scanner-cli-4.8.0.2856-linux.zip
-    #    sudo mv sonar-scanner-4.8.0.2856-linux /opt/sonar-scanner
-    #    echo "export PATH=\$PATH:/opt/sonar-scanner/bin" >> $GITHUB_ENV
-
-
-    # sonarlint kalite, düzen ve güvenlik taraması yapmak için adımımıza ekliyoruz 
-    # sonar-scanner: bu komutla kodun analiz edilmesi için parametreler alır 
-    # -Dsonar.projectKey=my_project_key: analiz edilen prohenin anahtarıdır (burada bir soru işaretim var araştırdım bulamadım)
-    # -Dsonar.sources=. \ analiz edilecek kodun yeriini belirtir 
-    # 35: sonar sunucunun adresi belirtir 
-    # 36: doğrulama için tokendir 
-    
-    #- name: Run SonarLint 
-    #  run: | 
-    #    echo "SonarLint taraması gerçekleştiriliyor..."  
-    #    sonar-scanner -Dsonar.projectKey=my_project_key \
-    #                   -Dsonar.sources=. \
-    #                   -Dsonar.host.url={{ secrets.SONAR_HOST_URL }} \  $
-    #-Dsonar.login={{ secrets.SONAR_TOKEN }}  $
-    # continue-on-error: true
-    
-    # burada hataya rağmen devam etmesi içi || true veya continue-on-error: true kullandım ikiside işe yaradı . 
-    # spesifik bir bölgedeyse hata //NOSONAR yazılacak 
-    # Docker için login
-    - name: Docker kurulumm
-      run: |
-        sudo apt update
-        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-        sudo rm -f /usr/share/keyrings/docker-archive-keyring.gpg
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        sudo apt update
-        sudo apt install -y docker-ce docker-ce-cli containerd.io
-        sudo docker --version
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        sudo usermod -aG docker $USER
-        newgrp docker
-        sudo chmod 666 /var/run/docker.sock
-
-      shell: bash
-      
       
     - name: Docker Login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
@@ -120,16 +47,16 @@ jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız
         IMAGE_TAG="${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}"
         docker build -t $IMAGE_TAG . 
         docker push $IMAGE_TAG
+
+    - name: Run Trivy Scan 
+      run: |
+       
+        trivy image --db-repository public.ecr.aws/aquasecurity/trivy-db:2 "${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}"
     
     - name: AWS connect etme
       run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" >> emre.pem 
-        chmod 400 emre.pem
-        ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -i emre.pem ubuntu@3.80.21.119
         hostname && ip r 
         docker stop $(docker ps -q)
         docker rm $(docker ps -a -q)
         docker run -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/myimage:${{ github.sha }}
 
-       
-        rm emre.pem
