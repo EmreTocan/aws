@@ -2,34 +2,30 @@ from flask import Flask, request, jsonify # type: ignore
 
 app = Flask(__name__)
 
-# Görevleri saklayacak basit bir liste (Veritabanı yerine kullanılacak)
 tasks = []
 
-# Görev ekleme (POST /tasks)
 @app.route('/tasks', methods=['POST'])
 def create_task():
     data = request.get_json()
     
-    # Görev için gerekli alanların varlığı kontrol ediliyor
     if 'name' not in data or 'status' not in data:
-        return jsonify({'error': 'Görev adı ve durumu gerekli'}), 400
+        return jsonify({'error': 'Görev adi ve durumu gerekli'}), 400
 
-    task_id = len(tasks) + 1  # Her yeni görev için benzersiz bir id
+    task_id = len(tasks) + 1 
     task = {
         'id': task_id,
         'name': data['name'],
-        'description': data.get('description', ''),  # Açıklama opsiyonel
+        'description': data.get('description', ''),  
         'status': data['status']
     }
     
     tasks.append(task)
     
-    return jsonify(task), 201  # Başarıyla eklenmiş görevi döndürür
+    return jsonify(task), 201 
 
-# Görev listeleme (GET /tasks)
 @app.route('/tasks', methods=['GET'])
 def list_tasks():
-    status = request.args.get('status')  # Filtreleme için 'status' parametresi
+    status = request.args.get('status')  
 
     if status:
         filtered_tasks = [task for task in tasks if task['status'] == status]
@@ -37,23 +33,21 @@ def list_tasks():
     
     return jsonify(tasks)
 
-# Belirli bir görevi alma (GET /tasks/<id>)
 @app.route('/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
     task = next((t for t in tasks if t['id'] == task_id), None)
     
     if task is None:
-        return jsonify({'error': 'Görev bulunamadı'}), 404
+        return jsonify({'error': 'Görev bulunamadi'}), 404
 
     return jsonify(task)
 
-# Görev güncelleme (PUT /tasks/<id>)
 @app.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     task = next((t for t in tasks if t['id'] == task_id), None)
     
     if task is None:
-        return jsonify({'error': 'Görev bulunamadı'}), 404
+        return jsonify({'error': 'Görev bulunamadi'}), 404
 
     data = request.get_json()
 
@@ -63,14 +57,12 @@ def update_task(task_id):
     
     return jsonify(task)
 
-# Görev silme (DELETE /tasks/<id>)
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     global tasks
     tasks = [t for t in tasks if t['id'] != task_id]
     
-    return jsonify({'message': 'Görev başarıyla silindi'}), 200
+    return jsonify({'message': 'Görev başariyla silindi'}), 200
 
-# Uygulama çalıştııırma
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
