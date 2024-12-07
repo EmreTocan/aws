@@ -1,21 +1,17 @@
 name: CI/CD Pipeline  
 
-on: # hangi olaylarla tetikleneceğini sıralamak için 
-  push: # değişiklik yapıldığında bir yerden diğer yere aktarıldığında tetiklenir
-    branches: # yukarıdaki push gerçekleştiğinde hangi dalın etkileneceği seçilir. 
-      - main # yukarıdaki push gerçekleştiğinde main tetiklenir ve iş akışı tetiklenir
+on: 
+  push: 
+    branches: 
+      - main 
 
-jobs: # işlemlerimizin başladığı kısım yapıalcak işleri tanımlarız 
+jobs:
   build: 
     runs-on: self-hosted
 
-    steps: # işlemlerimize başlarken her bir adımı buranın altında yapacağız
-    # burada kodların alınmasını sağlıyoruz devamında uygulayacağımız adımlar bu kod ile işlem yapacak2
+    steps:
     - name: Checkout Code
       uses: actions/checkout@v2
-
-    #- name: Set up Python
-    #  uses: actions/setup-python@v2
     
     - name: Install Trivy
       run: |
